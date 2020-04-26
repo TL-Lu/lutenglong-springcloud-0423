@@ -15,6 +15,8 @@ spring:
     host: 192.168.38.128
     port: 6379
     database: 0
+  resources:
+    static-locations: file:d:/pic/
 eureka:
   client:
     service-url:
@@ -24,7 +26,7 @@ spring:
   cloud:
     gateway:
       routes:
-        #gateway网关的唯一标识
+        #gateway网关的唯一标识       #################配置user
         - id: orderService
           #后端微服务的名称，和注册中心的名称一致
           uri: lb://SERVICE-ORDER
@@ -39,13 +41,23 @@ spring:
                 key-resolver: '#{@hostAddrKeyResolver}'
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 3
-          #gateway网关的唯一标识
+          #gateway网关的唯一标识          #################配置order
         - id: userService
           #后端微服务的名称，和注册中心的名称一致
           uri: lb://SERVICE-USER
           #断言策略，根据path断言
           predicates:
             - Path=/user/**
+          #去除前缀
+          filters:
+            - StripPrefix=0
+        #################配置配置中心
+        - id: configServer
+          #后端微服务的名称，和注册中心的名称一致
+          uri: lb://CONFIG-SERVER
+          #断言策略，根据path断言
+          predicates:
+            - Path=/config/**
           #去除前缀
           filters:
             - StripPrefix=0

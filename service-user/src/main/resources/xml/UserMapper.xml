@@ -10,9 +10,35 @@
         <result column="createTime" property="createTime" />
     </resultMap>
 
+    <resultMap id="cascaderMap" type="com.lutenglong.springcloud.eureka.entity.NationVo">
+        <id column="id" property="id"></id>
+        <result column="provinceName" property="name"></result>
+
+        <collection property="list" ofType="com.lutenglong.springcloud.eureka.entity.NationVo">
+            <id column="bid" property="id"></id>
+            <result column="cityName" property="name"></result>
+
+            <collection property="list" ofType="com.lutenglong.springcloud.eureka.entity.NationVo">
+                <id column="cid" property="id"></id>
+                <result column="districtName" property="name"></result>
+            </collection>
+        </collection>
+
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, username,birthday,createTime
     </sql>
 
+    <select id="cascader" resultMap="cascaderMap">
+	        SELECT
+        a.id    ,a.`province` provinceName,
+        b.id bid,b.city cityName,
+        c.id cid,c.district districtName
+         FROM nation a
+        LEFT JOIN nation b ON a.`id`=b.parent
+        LEFT JOIN nation c ON b.`id`=c.parent
+        WHERE a.parent=1
+    </select>
 </mapper>

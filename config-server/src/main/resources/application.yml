@@ -1,0 +1,19 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /config/
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/TL-Lu/lutenglong-springcloud-0423.git
+          search-paths:
+            - configfiles
+      label: config
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8764/eureka/

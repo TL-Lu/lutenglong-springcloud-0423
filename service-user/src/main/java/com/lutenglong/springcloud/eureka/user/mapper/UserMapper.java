@@ -1,7 +1,10 @@
 package com.lutenglong.springcloud.eureka.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.lutenglong.springcloud.eureka.entity.NationVo;
 import com.lutenglong.springcloud.eureka.entity.User;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.lutenglong.springcloud.eureka.entity.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    List<NationVo> cascader();
 }
